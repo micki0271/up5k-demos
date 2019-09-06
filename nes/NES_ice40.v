@@ -6,7 +6,7 @@
 
 module NES_ice40 (  
 	// clock input
-  input clock_16,
+  input clock_12,
   output LED0, LED1,
   
   // VGA
@@ -30,12 +30,14 @@ module NES_ice40 (
   output flash_mosi,
   input flash_miso,
   
-  input [4:0] buttons,
+  input buttons,
+
+  output [7:0] leds
   
 );
 	wire clock;
 
-wire [4:0] sel_btn;
+wire sel_btn;
 
 `ifdef no_io_prim
 assign sel_btn = buttons;
@@ -45,7 +47,7 @@ assign sel_btn = buttons;
 SB_IO #(
   .PIN_TYPE(6'b000001),
   .PULLUP(1'b1)
-) btns [4:0]   (
+) btns  (
   .PACKAGE_PIN(buttons),
   .D_IN_0(sel_btn)
 );
@@ -73,17 +75,22 @@ SB_IO #(
   wire [31:0] mapper_flags;
   
   pll pll_i (
-  	.clock_in(clock_16),
+  	.clock_in(clock_12),
   	.clock_out(clock),
   	.locked(locked_pre)
   );  
   
-  assign LED0 = memory_addr[0];
-  assign LED1 = !load_done;
+  assign LED0 = !memory_addr[0];
+  assign LED1 = load_done;
+  assign leds = memory_din_cpu;
   
   wire sys_reset = !clock_locked;
   reg reload;
+
+
   reg [2:0] last_pressed;
+
+/*
   reg [3:0] btn_dly;
   always @ ( posedge clock ) begin
     //Detect button release and trigger reload
@@ -102,7 +109,21 @@ SB_IO #(
     else if(!sel_btn[3])
       last_pressed <= {!sel_btn[4], 2'b11};
   end
-  
+*/
+
+  reg btn_dly;
+  reg last_pressed;
+
+  always @ (posedge clock ) begin
+    btn_dly <= sel_btn;
+    if (sel_btn == 1'b1 && btn_dly != 1'b1)
+      reload <= 1'b1;
+    else 
+      reload <= 1'b0;
+    
+    last_pressed <= 3'b000;
+  end
+
   main_mem mem (
     .clock(clock),
     .reset(sys_reset),
@@ -156,6 +177,17 @@ SB_IO #(
           dbgadr,
           dbgctr);
 
+/*
+reg [5:0] col;
+reg [5:0] count;
+
+always @(posedge clock) begin
+  if (scanline == 511) begin
+    if (count == 0) col <= col + 1;
+    count <= count + 1;
+  end
+end
+*/
 
 video video (
 	.clk(clock),
