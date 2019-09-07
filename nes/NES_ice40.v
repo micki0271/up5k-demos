@@ -30,9 +30,9 @@ module NES_ice40 (
   output flash_mosi,
   input flash_miso,
   
-  input buttons,
+  input buttons
 
-  output [7:0] leds
+  //output [7:0] leds
   
 );
 	wire clock;
@@ -82,7 +82,7 @@ SB_IO #(
   
   assign LED0 = !memory_addr[0];
   assign LED1 = load_done;
-  assign leds = memory_din_cpu;
+  //assign leds = memory_din_cpu;
   
   wire sys_reset = !clock_locked;
   reg reload;
@@ -112,7 +112,6 @@ SB_IO #(
 */
 
   reg btn_dly;
-  reg last_pressed;
 
   always @ (posedge clock ) begin
     btn_dly <= sel_btn;
@@ -211,13 +210,14 @@ video video (
 
 wire audio;
 assign AUDIO_O = audio;
-/*sigma_delta_dac sigma_delta_dac (
+
+sigma_delta_dac sigma_delta_dac (
 	.DACout(audio),
 	.DACin(sample[15:8]),
 	.CLK(clock),
 	.RESET(reset_nes),
   .CEN(run_nes)
-);*/
+);
 
 
 

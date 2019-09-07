@@ -17,10 +17,10 @@ set_io VGA_R[2] 47
 set_io VGA_R[1] 2
 set_io VGA_R[0] 4
 
-set_io -nowarn AUDIO_O 39
-set_io joy_strobe 40
-set_io joy_clock 41
-set_io joy_data 32
+set_io -nowarn AUDIO_O 19
+set_io joy_strobe 25
+set_io joy_clock 27
+set_io joy_data 21
 
 set_io flash_sck 15
 set_io flash_csn 16
@@ -35,12 +35,12 @@ set_io buttons 10
 #set_io buttons[3] 18
 #set_io buttons[4] 32
 
-set_io leds[0] 27
-set_io leds[1] 25
-set_io leds[2] 21
-set_io leds[3] 19
-set_io leds[4] 26
-set_io leds[5] 23
-set_io leds[6] 20
-set_io leds[7] 18
+#set_io leds[0] 27
+#set_io leds[1] 25
+#set_io leds[2] 21
+#set_io leds[3] 19
+#set_io leds[4] 26
+#set_io leds[5] 23
+#set_io leds[6] 20
+#set_io leds[7] 18
 
