@@ -47,7 +47,7 @@ module MMC1(input clk, input ce, input reset,
 // CCCCC
 // |||||
 // +++++- Select 4 KB or 8 KB CHR bank at PPU $0000 (low bit ignored in 8 KB mode)
-  reg [4:0] chr_bank_0;
+  (* mem2reg *) reg [4:0] chr_bank_0;
 
 // CCCCC
 // |||||
@@ -58,7 +58,7 @@ module MMC1(input clk, input ce, input reset,
 // |||||
 // |++++- Select 16 KB PRG ROM bank (low bit ignored in 32 KB mode)
 // +----- PRG RAM chip enable (0: enabled; 1: disabled; ignored on MMC1A)
-  reg [4:0] prg_bank;
+  (* mem2reg *) reg [4:0] prg_bank;
 
   reg delay_ctrl;	// used to prevent fast-write to the control register
 

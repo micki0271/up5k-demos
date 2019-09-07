@@ -68,11 +68,11 @@ assign read_data = sram_en ? csram_read_data :
  // The SRAM, used either for PROG_SRAM or CHR_SRAM
 generic_ram #(
   .WIDTH(8),
-  .WORDS(4096)
+  .WORDS(8192)
 ) sram_i (
   .clock(clock),
   .reset(reset),
-  .address(decoded_address[11:0]), 
+  .address(decoded_address[12:0]), 
   .wren(wren&sram_en), 
   .write_data(write_data), 
   .read_data(csram_read_data)
