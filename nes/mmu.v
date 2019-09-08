@@ -589,8 +589,8 @@ module MMC5(input clk, input ce, input reset,
   always @(posedge clk) begin
     if (ce) begin
       if (prg_write && prg_ain[15:10] == 6'b010100) begin // $5000-$53FF
-        if (prg_ain <= 16'h5113)
-          $write("%X <= %X (%d)\n", prg_ain, prg_din, ppu_scanline);
+//        if (prg_ain <= 16'h5113)
+//          $write("%X <= %X (%d)\n", prg_ain, prg_din, ppu_scanline);
         casez(prg_ain[9:0])
         10'h100: prg_mode <= prg_din[1:0];
         10'h101: chr_mode <= prg_din[1:0];
@@ -741,7 +741,7 @@ module MMC5(input clk, input ce, input reset,
       // Name table fetch
       if (insplit || mirrbits[0] == 0) chr_dout = (extended_ram_mode[1] ? 8'b0 : last_read_ram);
       else begin
-        $write("Inserting filltile!\n");
+//        $write("Inserting filltile!\n");
         chr_dout = fill_tile;
       end
     end else begin
@@ -829,10 +829,10 @@ module MMC5(input clk, input ce, input reset,
     
     // Override |chr_aout| if we're in a vertical split.
     if (insplit) begin
-      $write("In vertical split!\n");
+//      $write("In vertical split!\n");
       chr_aout = {2'b10, vsplit_bank, chr_ain[11:3], vscroll[2:0]};
     end else if (extended_ram_mode == 1 && is_bg_fetch) begin
-      $write("In exram thingy!\n");
+//      $write("In exram thingy!\n");
       // Extended attribute mode. Replace the page with the page from exram.
       chr_aout = {2'b10, upper_chr_bank_bits, last_read_ram[5:0], chr_ain[11:0]};
     end
@@ -1649,7 +1649,7 @@ module Mapper71(input clk, input ce, input reset,
     ciram_select <= 0;
   end else if (ce) begin
     if (prg_ain[15] && prg_write) begin
-      $write("%X <= %X (bank = %x)\n", prg_ain, prg_din, prg_bank);
+//      $write("%X <= %X (bank = %x)\n", prg_ain, prg_din, prg_bank);
       if (!prg_ain[14] && mapper232) // $8000-$BFFF Outer bank select (only on iNES 232)
         prg_bank[3:2] <= prg_din[4:3];
       if (prg_ain[14:13] == 0)       // $8000-$9FFF Fire Hawk Mirroring
@@ -1740,7 +1740,7 @@ module NesEvent(input clk, input ce, input reset,
     counter <= mmc1_chr[3] ? 0 : counter + 1;
     
     if (mmc1_chr != oldbits) begin
-      $write("NESEV Control Bits: %X => %X (%d)\n", oldbits, mmc1_chr, unlocked);
+//      $write("NESEV Control Bits: %X => %X (%d)\n", oldbits, mmc1_chr, unlocked);
       oldbits <= mmc1_chr;
     end
   end
@@ -2000,6 +2000,8 @@ module MultiMapper(input clk, input ce, input ppu_ce, input reset,
   wire [21:0] map28_prg_addr, map28_chr_addr;
   Mapper28 map28(clk, ce, reset, flags, prg_ain, map28_prg_addr, prg_read, prg_write, prg_din, map28_prg_allow,
                                         chr_ain, map28_chr_addr, map28_chr_allow, map28_vram_a10, map28_vram_ce);
+
+  wire mmc5_chr_dout;
 
   /*wire mmc2_prg_allow, mmc2_vram_a10, mmc2_vram_ce, mmc2_chr_allow;
   wire [21:0] mmc2_prg_addr, mmc2_chr_addr;

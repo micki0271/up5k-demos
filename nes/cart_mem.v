@@ -105,7 +105,7 @@ generic_ram #(
   up_spram spram_i (
     .clk(clock),
     .wen(wen_reg),
-    .addr(address_reg),
+    .addr({7'd0, address_reg}),
     .wdata(data_reg),
     .rdata(spram_read_data)
   );
