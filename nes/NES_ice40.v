@@ -162,14 +162,25 @@ SB_IO #(
   
   wire [31:0] dbgadr;
   wire [1:0] dbgctr;
-  wire [1:0] joy_clocks;
   
-  assign joy_clock = joy_clocks[0];
+  reg joy_data_sync = 0;
+  reg last_joypad_clock;
+	
+  always @(posedge clock) begin
+    if (joy_strobe) begin
+      joy_data_sync <= joy_data;
+    end
+
+    if (!joy_clock && last_joypad_clock) begin
+      joy_data_sync <= joy_data;
+    end
+    last_joypad_clock <= joy_clock;
+  end
 
   NES nes(clock, reset_nes, run_nes_g,
           mapper_flags,
           sample, color,
-          joy_strobe, joy_clocks, {3'b0,!joy_data},
+          joy_strobe, joy_clock, {3'b0,!joy_data_sync},
           5'b11111,  // enable all channels
           memory_addr,
           memory_read_cpu, memory_din_cpu,
