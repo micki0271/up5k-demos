@@ -199,10 +199,14 @@ SB_IO #(
     .USER_SIGNAL_TO_GLOBAL_BUFFER(run_nes),
     .GLOBAL_BUFFER_OUTPUT(run_nes_g)
   );
-  
+ 
+  reg clk21;
+
   // NES is clocked at every 4th cycle.
-  always @(posedge clock)
+  always @(posedge clock) begin
     nes_ce <= nes_ce + 1;
+    clk21 <= ~clk21;
+  end
   
   wire [31:0] dbgadr;
   wire [1:0] dbgctr;
@@ -247,7 +251,7 @@ end
 */
 
 video video (
-	.clk(clock),
+	.clk(clk21),
 		
 	.color(color),
 	.count_v(scanline),
@@ -276,7 +280,5 @@ sigma_delta_dac sigma_delta_dac (
 	.RESET(reset_nes),
   .CEN(run_nes)
 );
-
-
 
 endmodule
