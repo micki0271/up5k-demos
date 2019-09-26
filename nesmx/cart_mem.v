@@ -147,7 +147,7 @@ begin
     if (reload == 1'b1) begin
       load_done_pre <= 1'b0;
       load_done <= 1'b0;
-      load_addr <= 17'h1ffff;
+      load_addr <= 17'h0000;
       flags_out <= 32'h00000000;
       wait_ctr <= 8'h00;
       index_lat <= index;
@@ -170,7 +170,7 @@ begin
         if (flashmem_ready == 1'b1) begin
 	  flashmem_valid <= 0;
 	  sdram_written <= 1;
-	  if (load_addr == 7) diag <= load_write_data;
+	  diag <= load_write_data;
         end
       end else begin
         if (wait_ctr < 8'hFF)
