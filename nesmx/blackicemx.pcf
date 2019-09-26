@@ -18,10 +18,10 @@ set_io VGA_R[2] 138
 set_io VGA_R[1] 142
 set_io VGA_R[0] 141
 
-set_io -nowarn AUDIO_O 19
-set_io joy_strobe 20
-set_io joy_clock 23
-set_io joy_data 24
+set_io -nowarn AUDIO_O 26
+set_io joy_strobe 22
+set_io joy_clock 21
+set_io joy_data 25
 
 set_io flash_sck 70
 set_io flash_csn 71
