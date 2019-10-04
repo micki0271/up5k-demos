@@ -17,7 +17,7 @@ endif
 
 
 %.bin: %.asc
-	icepack -s $< $@
+	icepack $< $@
 
 %.rpt: %.asc
 	icetime $(if $(FREQ),-c $(FREQ)) -d $(DEVICE) -mtr $@ $<
