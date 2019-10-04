@@ -138,7 +138,7 @@ begin
   if (reset == 1'b1) begin
     load_done_pre <= 1'b0;
     load_done <= 1'b0;
-    load_addr <= 17'h1ffff;
+    load_addr <= 17'h00000;
     flags_out <= 32'h00000000;
     wait_ctr <= 8'h00;
     index_lat <= 4'h0;
