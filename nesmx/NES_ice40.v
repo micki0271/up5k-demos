@@ -108,9 +108,13 @@ SB_IO #(
   assign LED1 = !load_done;
   //assign diag = memory_din_cpu;
   
-  wire sys_reset = !clock_locked;
   reg reload;
+  reg [12:0] reset_count;
+  wire sys_reset = !(&reset_count);
 
+  always @(posedge clock) begin
+    if (clock_locked && sys_reset) reset_count <= reset_count + 1;
+  end
 
   reg [2:0] last_pressed;
 
