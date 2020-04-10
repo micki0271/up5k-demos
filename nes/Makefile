@@ -17,3 +17,7 @@ rom/games.bin: $(IMAGES)
 
 up5kprog_game: rom/games.bin
 	iceprog -o 1024k rom/games.bin
+
+image:
+	truncate -s 1048576 nes.bin
+	cat nes.bin rom/game_smb.bin > nes_smb.bin

@@ -1,7 +1,6 @@
 *.asc
 *.bin
 *.blif
-*.nes
 *.exp
 *.vvp
 *.blog
